@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коррекция изображения</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>Коррекция изображения</h1>
+    <hr>
+    <form action="{{ url_for('index') }}" method="post" enctype="multipart/form-data">
+        <label for="image">Изображение:</label>
+        <input type="file" name="image" id="image">
+        <br>
+        <br>
+        <label for="brightness">Яркость (1.0 = без изменений):</label>
+        <input type="range" step="0.1" min="0.0" max="3.0" name="brightness" id="brightness" value="{{ brightness_value }}" oninput="this.nextElementSibling.value = this.value">
+        <output>{{ brightness_value }}</output>
+        <br>
+        <label for="contrast">Контрастность (1.0 = без изменений):</label>
+        <input type="range" step="0.1" min="-3.0" max="3.0" name="contrast" id="contrast" value="{{ contrast_value }}" oninput="this.nextElementSibling.value = this.value">
+        <output>{{ contrast_value }}</output>
+        <br>
+        <label for="sharpness">Резкость (1.0 = без изменений):</label>
+        <input type="range" step="0.1" min="-15.0" max="15.0" name="sharpness" id="sharpness" value="{{ sharpness_value }}" oninput="this.nextElementSibling.value = this.value">
+        <output>{{ sharpness_value }}</output>
+        <br>
+        <br>
+        <input type="submit" value="Применить">
+        <button type="submit" name="reset">Сбросить значения</button>
+    </form>
+    <br>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="message">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
+    <h2>Изображение:</h2>
+    <hr>
+    {% if image_url %}
+        <div class="image-container">
+            <img src="{{ image_url }}" alt="Загруженное изображение">
+        </div>
+    {% else %}
+        <p>Изображение не загружено.</p>
+    {% endif %}
+<hr>
+</body>
+</html>
